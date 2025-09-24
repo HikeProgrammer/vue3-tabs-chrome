@@ -10,6 +10,8 @@
         :ref="(e) => setTabRef(e, tab)"
         @contextmenu="(e) => handleContextMenu(e, tab, i)"
         @click="(e) => handleNativeClick(e, tab, i)"
+        @mouseenter="(e) => handleMouseEnter(e, tab, i)"
+        @mouseleave="(e) => handleMouseLeave(e, tab, i)"
       >
         <div class="tabs-background">
           <div class="tabs-background-divider"></div>
@@ -96,7 +98,7 @@ export interface Refs {
 export default defineComponent({
   name: 'VueTabsChrome',
   components: { RenderTemp },
-  emits: ['click', 'update:modelValue', 'remove', 'dragstart', 'dragging', 'dragend', 'swap', 'contextmenu'],
+  emits: ['click', 'update:modelValue', 'remove', 'dragstart', 'dragging', 'dragend', 'swap', 'contextmenu', 'mouseenter', 'mouseleave'],
   props: {
     modelValue: {
       type: [String, Number],
@@ -315,6 +317,16 @@ export default defineComponent({
     const handleClick = (e: Event, tab: Tab, i: number) => {
       const { emit } = context
       emit('click', e, tab, i)
+    }
+
+    const handleMouseEnter = (e: Event, tab: Tab, i: number) => {
+      const { emit } = context
+      emit('mouseenter', e, tab, i)
+    }
+
+    const handleMouseLeave = (e: Event, tab: Tab, i: number) => {
+      const { emit } = context
+      emit('mouseleave', e, tab, i)
     }
 
     /**
@@ -572,6 +584,8 @@ export default defineComponent({
       showTabCloseIcon,
       renderLabelText,
       handleNativeClick,
+      handleMouseLeave,
+      handleMouseEnter,
       doLayout,
       addTab,
       removeTab

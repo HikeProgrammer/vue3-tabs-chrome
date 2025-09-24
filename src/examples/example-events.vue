@@ -9,6 +9,8 @@
     @contextmenu="handleContextMenu"
     @click="handleClick"
     @remove="handleRemove"
+    @mouseenter="(e, t, i) => handleNamedEvent(e, 'mouseenter', t,i)"
+    @mouseleave="(e, t, i) => handleNamedEvent(e, 'mouseleave', t,i)"
   />
   <div class="events-tip">
     <p>List of events that can be triggered.</p>
@@ -21,6 +23,8 @@
       <li>dragstart</li>
       <li>dragging</li>
       <li>dragend</li>
+      <li>mouseenter</li>
+      <li>mouseleave</li>
     </ul>
   </div>
   {{ events }}
@@ -103,6 +107,10 @@ export default defineComponent({
       console.log(event, tab, index)
       events.push('click')
     }
+    const handleNamedEvent = (event: Event, eventName:string, tab: Tab, index: number) => {
+      console.log(event, tab, index)
+      events.push(eventName)
+    }
 
     const handleRemove = (tab: Tab, index: number) => {
       console.log(tab, index)
@@ -120,6 +128,7 @@ export default defineComponent({
       handleDragEnd,
       handleContextMenu,
       handleClick,
+      handleNamedEvent,
       handleRemove,
       handleClear
     }
