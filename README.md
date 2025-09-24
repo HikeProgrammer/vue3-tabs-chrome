@@ -103,7 +103,7 @@ yarn add vue3-tabs-chrome -S
 ## Events
 
 | Event Name  | Description                                                                                            | Parameters          |
-| ----------- | ------------------------------------------------------------------------------------------------------ | ------------------- |
+|-------------|--------------------------------------------------------------------------------------------------------|---------------------|
 | click       | Triggered when the user's pointer is pressed and unpressed and has not moved enough to start dragging. | (event, tab, index) |
 | swap        | Swap tab                                                                                               | (tab, targetTab)    |
 | remove      | Remove tab                                                                                             | (tab, index)        |
@@ -111,6 +111,8 @@ yarn add vue3-tabs-chrome -S
 | dragstart   | Tab dragstart event                                                                                    | (event, tab, index) |
 | dragging    | Tab dragstart event                                                                                    | (event, tab, index) |
 | dragend     | Tab dragend event                                                                                      | (event, tab)        |
+| mouseenter  | Tab mouseenter event                                                                                   | (event, tab, index) |
+| mouseleave  | Tab mouseleave event                                                                                   | (event, tab, index) |
 
 ## Slots
 
