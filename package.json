@@ -1,5 +1,5 @@
 {
-  "name": "vue3-tabs-chrome",
+  "name": "@hike/vue3-tabs-chrome",
   "version": "0.3.3",
   "private": false,
   "license": "MIT",

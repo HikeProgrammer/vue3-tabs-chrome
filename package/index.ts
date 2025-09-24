@@ -1,6 +1,6 @@
 import { App, Plugin } from 'vue'
 import Vue3TabsChrome from './vue3-tabs-chrome.vue'
-import type { Tab } from './vue3-tabs-chrome.vue'
+import type { Tab } from './types'
 import './theme-dark.less'
 
 const install = (app: App) => {
