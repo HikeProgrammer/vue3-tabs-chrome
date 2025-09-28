@@ -28,7 +28,7 @@
             <path d="M 4 4 L 12 12 M 12 4 L 4 12"></path>
           </svg>
         </div>
-        <div class="tabs-main" :title="tab.label">
+        <div class="tabs-main">
           <span class="tabs-favico" v-if="tab.favico">
             <render-temp v-if="typeof tab.favico === 'function'" :render="tab.favico" :params="[tab, i]" />
             <img v-else-if="tab.favico" :src="tab.favico" alt="" />
