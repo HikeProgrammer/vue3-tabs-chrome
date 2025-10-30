@@ -2,16 +2,16 @@
   <div class="vue3-tabs-chrome">
     <div class="tabs-content" :ref="setContentRef">
       <div
-        class="tabs-item"
-        v-for="(tab, i) in tabs"
-        :class="{ active: tab.key === modelValue }"
-        :key="tab.key"
-        :style="{ width: tabWidth + 'px' }"
-        :ref="(e) => setTabRef(e, tab)"
-        @contextmenu="(e) => handleContextMenu(e, tab, i)"
-        @click="(e) => handleNativeClick(e, tab, i)"
-        @mouseenter="(e) => handleMouseEnter(e, tab, i)"
-        @mouseleave="(e) => handleMouseLeave(e, tab, i)"
+          class="tabs-item"
+          v-for="(tab, i) in tabs"
+          :class="{ active: tab.key === modelValue }"
+          :key="tab.key"
+          :style="{ width: tabWidth + 'px' }"
+          :ref="(e) => setTabRef(e, tab)"
+          @contextmenu="(e) => handleContextMenu(e, tab, i)"
+          @click="(e) => handleNativeClick(e, tab, i)"
+          @mouseenter="(e) => handleMouseEnter(e, tab, i)"
+          @mouseleave="(e) => handleMouseLeave(e, tab, i)"
       >
         <div class="tabs-background">
           <div class="tabs-background-divider"></div>
@@ -30,21 +30,21 @@
         </div>
         <div class="tabs-main">
           <span class="tabs-favico" v-if="tab.favico">
-            <render-temp v-if="typeof tab.favico === 'function'" :render="tab.favico" :params="[tab, i]" />
-            <img v-else-if="tab.favico" :src="tab.favico" alt="" />
+            <render-temp v-if="typeof tab.favico === 'function'" :render="tab.favico" :params="[tab, i]"/>
+            <img v-else-if="tab.favico" :src="tab.favico" alt=""/>
           </span>
           <span class="tabs-label" :class="{ 'no-close': !showTabCloseIcon(tab), 'no-icon': !tab.favico }">
-            <render-temp v-if="typeof renderLabel === 'function'" :render="renderLabel" :params="[tab, i]" />
+            <render-temp v-if="typeof renderLabel === 'function'" :render="renderLabel" :params="[tab, i]"/>
             <template v-else>{{ tab.label }}</template>
           </span>
         </div>
       </div>
       <span
-        class="tabs-after"
-        :ref="setAfterRef"
-        :style="{ left: (tabWidth - gap * 2) * tabs.length + gap * 2 + 'px' }"
+          class="tabs-after"
+          :ref="setAfterRef"
+          :style="{ left: (tabWidth - gap * 2) * tabs.length + gap * 2 + 'px' }"
       >
-        <slot name="after" />
+        <slot name="after"/>
       </span>
     </div>
   </div>
@@ -65,14 +65,16 @@ import {
   h,
   onUnmounted,
   ComponentPublicInstance,
-  VNode
+  VNode, watch
 } from 'vue'
+
+export type { Tab } from './types'
 
 export interface Refs {
   [key: string]: Element | null
 }
 
-export default defineComponent({
+const _default = defineComponent({
   name: 'VueTabsChrome',
   components: { RenderTemp },
   emits: ['click', 'update:modelValue', 'remove', 'dragstart', 'dragging', 'dragend', 'swap', 'contextmenu', 'mouseenter', 'mouseleave'],
@@ -148,7 +150,12 @@ export default defineComponent({
      * 计算单个 tab 的宽度
      */
     const calcTabWidth = () => {
-      const { tabs, minWidth, maxWidth, gap } = props
+      const {
+        tabs,
+        minWidth,
+        maxWidth,
+        gap
+      } = props
       const { $content } = $refs
       const afterWidth = $refs.$after?.getBoundingClientRect().width || 0
       if (!$content) return Math.max(maxWidth, minWidth)
@@ -183,7 +190,10 @@ export default defineComponent({
      * @param i 当前拖拽的下标
      */
     const handleDragMove = (e: Event, tab: Tab, i: number) => {
-      const { tabs, gap } = props
+      const {
+        tabs,
+        gap
+      } = props
       const { emit } = context
 
       if (tab.swappable === false) {
@@ -335,7 +345,11 @@ export default defineComponent({
      * @param i 当前命中 tab 的下标
      */
     const handleDelete = (tab: Tab, i: number) => {
-      const { tabs, modelValue, onClose } = props
+      const {
+        tabs,
+        modelValue,
+        onClose
+      } = props
       const { emit } = context
       const index = tabs.findIndex((item) => item.key === modelValue)
 
@@ -370,7 +384,11 @@ export default defineComponent({
      * @param newTabs 用户需要添加的 tab
      */
     const addTab = (...newTabs: Array<Tab>) => {
-      const { insertToAfter, modelValue, tabs } = props
+      const {
+        insertToAfter,
+        modelValue,
+        tabs
+      } = props
       if (insertToAfter) {
         const i = tabs.findIndex((tab) => tab.key === modelValue)
         tabs.splice(i + 1, 0, ...newTabs)
@@ -420,7 +438,10 @@ export default defineComponent({
      * 判断关闭按钮是否展示
      */
     const showTabCloseIcon = (tab: Tab) => {
-      const { modelValue, autoHiddenCloseIconWidth } = props
+      const {
+        modelValue,
+        autoHiddenCloseIconWidth
+      } = props
       if (tab.closable === false) {
         return false
       }
@@ -452,7 +473,10 @@ export default defineComponent({
      */
     const doLayout = () => {
       calcTabWidth()
-      const { tabs, gap } = props
+      const {
+        tabs,
+        gap
+      } = props
       tabs.forEach((tab, i) => {
         const instance = tab._instance
         const _x = (tabWidth.value - gap * 2) * i
@@ -551,6 +575,20 @@ export default defineComponent({
       if (timer) window.clearTimeout(timer)
     })
 
+    watch(
+      () => props.tabs,
+      (newTabs, oldTabs) => {
+        // Perform actions when tabs array changes
+
+        // Example: re-init layout or add new instances
+        nextTick(() => {
+          init()
+          doLayout()
+        })
+      },
+      { deep: true }
+    )
+
     return {
       setTabRef,
       setContentRef,
@@ -569,6 +607,8 @@ export default defineComponent({
     }
   }
 })
+export default _default;
+export const Vue3TabsChrome = _default;
 </script>
 
 <style lang="less">

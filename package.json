@@ -1,6 +1,6 @@
 {
   "name": "@hike/vue3-tabs-chrome",
-  "version": "0.3.3",
+  "version": "0.3.5",
   "private": false,
   "license": "MIT",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "move": "scp ./package/index.d.ts ./dist/vue3-tabs-chrome.common.d.ts && scp ./package/vue3-tabs-chrome.vue.d.ts ./dist/vue3-tabs-chrome.vue.d.ts",
-    "lib": "vue-cli-service build --target lib --name vue3-tabs-chrome ./package/index.ts && npm run move"
+    "lib": "vue-cli-service build --target lib ./package/index.ts && npm run move"
   },
   "files": [
     "dist/**.*"
